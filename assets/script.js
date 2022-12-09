@@ -17,21 +17,30 @@ var getLocationData = function(q) {
     .then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                // displayResults(data.results, q);
+                getCoordinates(data);
                 console.log(data);
             });
-        } else {
-            alert('Error: ' + response.statusText);
         }
     })
     .catch(function (error) {
-        alert('Unable to connect to LOC');
+        alert('Unable to connect');
     });
+}
+
+var getCoordinates = function(data) {
+    var lat = data[0].lat.toString();
+    var lon = data[0].lon.toString();
+    console.log("LAT", lat);
+    console.log("LON", lon);
+
+    getWeatherData(lat, lon);
 }
     
     
-// var getWeatherData = function(q) {    
-//     var fetchUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat "&lon=" + lon "&appid" + apiKey;
-// }
+var getWeatherData = function(data) {    
+    var fetchUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat "&lon=" + lon "&appid" + apiKey;
+
+
+}
 
 searchBrn.addEventListener('click', handleSearch);
