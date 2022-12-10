@@ -6,12 +6,18 @@ var mainCardParent = document.querySelector('.main-card-parent');
 var mainDivEl = document.querySelector('.main-card-div');
 var smallCardParent = document.querySelector('.small-card-parent');
 var smallCardDiv = document.querySelector('.small-card-div');
+var buttonDiv = document.querySelector('.button-div');
 
 
 var handleSearch = function(event) {
     event.preventDefault();
     var q = userInput.value.trim();
     getLocationData(q);
+    createMemoryButton(q);
+}
+
+var redoSearch = function(event) {
+    event.preventDefault
 }
 
 var getLocationData = function(q) {
@@ -63,7 +69,7 @@ var getWeatherData = function(lat, lon) {
 
 var displayWeather = function(city, weather) {
     // Main card, current weather
-        // mainCardParent.innerHTML = null;
+        mainDivEl.innerHTML = null;
 
         var iconCode = weather[0].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
@@ -100,15 +106,17 @@ var displayWeather = function(city, weather) {
         iconSpanEl.append(iconImgEl);
 
 
-    // Small cards, 5-day forecast  
-
-}
-
+        
+    }
+    
 var displayCards = function(weather) {
-    weather.slice(8);
-    for (var i = 0; i < weather.length; i = i + 8) {  
+    // Small cards, 5-day forecast  
+        smallCardDiv.innerHTML = null;
+        var dailyWeather =  weather.slice(7);
+    
+    for (var i = 0; i < dailyWeather.length; i = i + 8) {  
             
-        var iconCode = weather[i].weather[0].icon;
+        var iconCode = dailyWeather[i].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
 
         // var smallCardDiv = document.createElement('div');
@@ -123,15 +131,17 @@ var displayCards = function(weather) {
         smallImgEl.setAttribute('src', iconUrl);
         smallImgEl.setAttribute('alt', 'Weather icon');
         var smallPTemp = document.createElement('p');
-        smallPTemp.className = 'card-text';
+        smallPTemp.className = 'card-text fs-6';
         var smallPWind = document.createElement('p');
-        smallPWind.className = 'card-text';
+        smallPWind.className = 'card-text fs-6';
         var smallPHumidity = document.createElement('p');
-        smallPHumidity.className = 'card-text';
+        smallPHumidity.className = 'card-text fs-6';
 
-        smallH5El.textContent = weather[i].dt_txt.slice(0, 10);
-        smallPTemp.textContent = "Temp: " + weather[i].main.temp + " °F";
-        console.log(weather[i].dt_txt);
+        smallH5El.textContent = dailyWeather[i].dt_txt.slice(5, 10);
+        smallPTemp.textContent = "Temp: " + dailyWeather[i].main.temp + " °F";
+        smallPWind.textContent = "Wind: " + dailyWeather[i].wind.speed + " mph";
+        smallPHumidity.textContent = "Humidity: " + dailyWeather[i].main.humidity + "%";
+        console.log(dailyWeather[i].dt_txt);
 
         // smallCardParent.appendChild(smallCardDiv);
         smallCardDiv.appendChild(smallCardEl);
@@ -139,6 +149,30 @@ var displayCards = function(weather) {
         smallCardBody.appendChild(smallH5El);
         smallH5El.append(smallImgEl, smallPTemp, smallPWind, smallPHumidity);
     }
+}
+
+// Create buttons via city names saved in local storage
+
+var createMemoryButton = function(city) {
+    localStorage.setItem('city', city);
+
+    var buttonEl = document.createElement('button');
+    buttonEl.className = 'btn btn-primary'
+    buttonEl.setAttribute('type', 'button');
+    
+    arr = city.split(" ")
+    for (i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+    }
+    cityCapitalized = arr.join(" ");
+
+    console.log(cityCapitalized);
+    
+    buttonEl.textContent = cityCapitalized;
+
+    buttonDiv.appendChild(buttonEl);
+
+    buttonEl.addEventListener('click', redoSearch);
 }
 
 
