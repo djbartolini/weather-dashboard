@@ -17,7 +17,9 @@ var handleSearch = function(event) {
 }
 
 var redoSearch = function(event) {
-    event.preventDefault
+    event.preventDefault();
+    var q = this.innerHTML;
+    getLocationData(q);
 }
 
 var getLocationData = function(q) {
