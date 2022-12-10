@@ -1,4 +1,5 @@
 var apiKey = "8ceea4a5b8699e706f70618add0c2bc4";
+var keyTwo = "6dec8991871571d158fadef874d6fcdd";
 
 var searchBrn = document.querySelector('.search-btn');
 var userInput = document.querySelector('.user-input')
@@ -37,10 +38,21 @@ var getCoordinates = function(data) {
 }
     
     
-var getWeatherData = function(data) {    
-    var fetchUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat "&lon=" + lon "&appid" + apiKey;
+var getWeatherData = function(lat, lon) {    
+    var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=" + "5" + "&appid=" + apiKey;
 
-
+    fetch(weatherUrl)
+    .then(function (response) {
+        if (response.ok) {
+            response.json().then(function (data) {
+                // displayWeather(data);
+                console.log(data);
+            });
+        }
+    })
+    .catch(function (error) {
+        alert('Unable to connect');
+    });
 }
 
 searchBrn.addEventListener('click', handleSearch);
