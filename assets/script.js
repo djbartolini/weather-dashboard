@@ -3,7 +3,9 @@ var apiKey = "8ceea4a5b8699e706f70618add0c2bc4";
 var searchBrn = document.querySelector('.search-btn');
 var userInput = document.querySelector('.user-input');
 var mainCardParent = document.querySelector('.main-card-parent');
+var mainDivEl = document.querySelector('.main-card-div');
 var smallCardParent = document.querySelector('.small-card-parent');
+var smallCardDiv = document.querySelector('.small-card-div');
 
 
 var handleSearch = function(event) {
@@ -59,43 +61,6 @@ var getWeatherData = function(lat, lon) {
 }
 
 
-var displayCards = function(weather) {
-    weather.slice(8);
-    for (var i = 0; i < weather.length; i = i + 8) {  
-            
-        var iconCode = weather[i].weather[0].icon;
-        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-
-        var smallCardDiv = document.createElement('div');
-        smallCardDiv.className = 'row';
-        var smallCardEl = document.createElement('div');
-        smallCardEl.className = 'card col-2 m-2';
-        var smallCardBody = document.createElement('div');
-        smallCardBody.className = 'card-body';
-        var smallH5El = document.createElement('h5');
-        smallH5El.className = 'card-title';
-        var smallImgEl = document.createElement('img');
-        smallImgEl.setAttribute('src', iconUrl);
-        smallImgEl.setAttribute('alt', 'Weather icon');
-        var smallPTemp = document.createElement('p');
-        smallPTemp.className = 'card-text';
-        var smallPWind = document.createElement('p');
-        smallPWind.className = 'card-text';
-        var smallPHumidity = document.createElement('p');
-        smallPHumidity.className = 'card-text';
-
-        smallH5El.textContent = weather[i].dt_txt.slice(0, 10);
-        smallPTemp.textContent = "Temp: " + weather[i].main.temp + " °F";
-        console.log(weather[i].dt_txt);
-
-        smallCardParent.appendChild(smallCardDiv);
-        smallCardDiv.appendChild(smallCardEl);
-        smallCardEl.appendChild(smallCardBody);
-        smallCardBody.appendChild(smallH5El);
-        smallH5El.append(smallImgEl, smallPTemp, smallPWind, smallPHumidity);
-    }
-}
-
 var displayWeather = function(city, weather) {
     // Main card, current weather
         // mainCardParent.innerHTML = null;
@@ -103,8 +68,8 @@ var displayWeather = function(city, weather) {
         var iconCode = weather[0].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
         
-        var mainDivEl = document.createElement('div');
-        mainDivEl.className = 'card';
+        // var mainDivEl = document.createElement('div');
+        // mainDivEl.className = 'col-12';
         var mainCardEl = document.createElement('div');
         mainCardEl.className = 'card';
         var mainCardBodyEl = document.createElement('div');
@@ -127,7 +92,7 @@ var displayWeather = function(city, weather) {
         mainPWind.textContent = "Wind: " + weather[0].wind.speed + " mph";
         mainPHumidity.textContent = "Humidity: " + weather[0].main.humidity + "%";
 
-        mainCardParent.appendChild(mainDivEl);
+        // mainCardParent.appendChild(mainDivEl);
         mainDivEl.appendChild(mainCardEl);
         mainCardEl.appendChild(mainCardBodyEl);
         mainCardBodyEl.append(mainH5el, mainPTemp, mainPWind, mainPHumidity);
@@ -138,6 +103,44 @@ var displayWeather = function(city, weather) {
     // Small cards, 5-day forecast  
 
 }
+
+var displayCards = function(weather) {
+    weather.slice(8);
+    for (var i = 0; i < weather.length; i = i + 8) {  
+            
+        var iconCode = weather[i].weather[0].icon;
+        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+
+        // var smallCardDiv = document.createElement('div');
+        // smallCardDiv.className = 'row';
+        var smallCardEl = document.createElement('div');
+        smallCardEl.className = 'card col-2 m-2';
+        var smallCardBody = document.createElement('div');
+        smallCardBody.className = 'card-body';
+        var smallH5El = document.createElement('h5');
+        smallH5El.className = 'card-title';
+        var smallImgEl = document.createElement('img');
+        smallImgEl.setAttribute('src', iconUrl);
+        smallImgEl.setAttribute('alt', 'Weather icon');
+        var smallPTemp = document.createElement('p');
+        smallPTemp.className = 'card-text';
+        var smallPWind = document.createElement('p');
+        smallPWind.className = 'card-text';
+        var smallPHumidity = document.createElement('p');
+        smallPHumidity.className = 'card-text';
+
+        smallH5El.textContent = weather[i].dt_txt.slice(0, 10);
+        smallPTemp.textContent = "Temp: " + weather[i].main.temp + " °F";
+        console.log(weather[i].dt_txt);
+
+        // smallCardParent.appendChild(smallCardDiv);
+        smallCardDiv.appendChild(smallCardEl);
+        smallCardEl.appendChild(smallCardBody);
+        smallCardBody.appendChild(smallH5El);
+        smallH5El.append(smallImgEl, smallPTemp, smallPWind, smallPHumidity);
+    }
+}
+
 
 
 searchBrn.addEventListener('click', handleSearch);
