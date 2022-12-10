@@ -8,7 +8,7 @@ var smallCardParent = document.querySelector('.small-card-parent');
 var smallCardDiv = document.querySelector('.small-card-div');
 var buttonDiv = document.querySelector('.button-div');
 
-
+// Handle new search
 var handleSearch = function(event) {
     event.preventDefault();
     var q = userInput.value.trim();
@@ -16,12 +16,14 @@ var handleSearch = function(event) {
     createMemoryButton(q);
 }
 
+// Handle search from button
 var redoSearch = function(event) {
     event.preventDefault();
     var q = this.innerHTML;
     getLocationData(q);
 }
 
+// Geocode API gets coordinates from city name
 var getLocationData = function(q) {
     var geocodeUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + q + "&limit=" + "5" + "&appid=" + apiKey; 
     
@@ -42,13 +44,11 @@ var getLocationData = function(q) {
 var getCoordinates = function(data) {
     var lat = data[0].lat.toString();
     var lon = data[0].lon.toString();
-    console.log("LAT", lat);
-    console.log("LON", lon);
-
     getWeatherData(lat, lon);
 }
     
-    
+  
+// OpenWeather API gets weather data
 var getWeatherData = function(lat, lon) {    
     var weatherUrl = "https:api.openweathermap.org/data/2.5/forecast?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
 
@@ -75,9 +75,7 @@ var displayWeather = function(city, weather) {
 
         var iconCode = weather[0].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
-        
-        // var mainDivEl = document.createElement('div');
-        // mainDivEl.className = 'col-12';
+  
         var mainCardEl = document.createElement('div');
         mainCardEl.className = 'card';
         var mainCardBodyEl = document.createElement('div');
@@ -100,16 +98,13 @@ var displayWeather = function(city, weather) {
         mainPWind.textContent = "Wind: " + weather[0].wind.speed + " mph";
         mainPHumidity.textContent = "Humidity: " + weather[0].main.humidity + "%";
 
-        // mainCardParent.appendChild(mainDivEl);
         mainDivEl.appendChild(mainCardEl);
         mainCardEl.appendChild(mainCardBodyEl);
         mainCardBodyEl.append(mainH5el, mainPTemp, mainPWind, mainPHumidity);
         mainH5el.appendChild(iconSpanEl);
-        iconSpanEl.append(iconImgEl);
-
-
-        
+        iconSpanEl.append(iconImgEl);  
     }
+
     
 var displayCards = function(weather) {
     // Small cards, 5-day forecast  
@@ -121,8 +116,6 @@ var displayCards = function(weather) {
         var iconCode = dailyWeather[i].weather[0].icon;
         var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
 
-        // var smallCardDiv = document.createElement('div');
-        // smallCardDiv.className = 'row';
         var smallCardEl = document.createElement('div');
         smallCardEl.className = 'card col-2 m-2';
         var smallCardBody = document.createElement('div');
@@ -145,7 +138,6 @@ var displayCards = function(weather) {
         smallPHumidity.textContent = "Humidity: " + dailyWeather[i].main.humidity + "%";
         console.log(dailyWeather[i].dt_txt);
 
-        // smallCardParent.appendChild(smallCardDiv);
         smallCardDiv.appendChild(smallCardEl);
         smallCardEl.appendChild(smallCardBody);
         smallCardBody.appendChild(smallH5El);
@@ -153,30 +145,27 @@ var displayCards = function(weather) {
     }
 }
 
-// Create buttons via city names saved in local storage
 
-var createMemoryButton = function(city) {
+// Create buttons via city names saved in local storage
+var createMemoryButton = function(city) {  
     localStorage.setItem('city', city);
 
     var buttonEl = document.createElement('button');
     buttonEl.className = 'btn btn-primary'
     buttonEl.setAttribute('type', 'button');
     
+    // For loop to capitalize first letter of each searched city name
     arr = city.split(" ")
     for (i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
     }
     cityCapitalized = arr.join(" ");
 
-    console.log(cityCapitalized);
-    
     buttonEl.textContent = cityCapitalized;
-
     buttonDiv.appendChild(buttonEl);
 
     buttonEl.addEventListener('click', redoSearch);
 }
-
 
 
 searchBrn.addEventListener('click', handleSearch);
