@@ -5,6 +5,7 @@ var userInput = document.querySelector('.user-input');
 var mainCardParent = document.querySelector('.main-card-parent');
 
 
+
 var handleSearch = function(event) {
     event.preventDefault();
     var q = userInput.value.trim();
@@ -57,7 +58,10 @@ var getWeatherData = function(lat, lon) {
 }
 
 var displayWeather = function(city, weather) {
-        // Main card, current weather
+    // Main card, current weather
+        iconCode = weather[0].weather[0].icon;
+        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        
         var mainDivEl = document.createElement('div');
         mainDivEl.className = 'card';
         var mainCardEl = document.createElement('div');
@@ -66,12 +70,17 @@ var displayWeather = function(city, weather) {
         mainCardBodyEl.className = 'card-body';
         var mainH5el = document.createElement('h4');
         mainH5el.className = 'card-title';
+        var iconSpanEl = document.createElement('span');
+        var iconImgEl = document.createElement('img');
+        iconImgEl.setAttribute('src', iconUrl);
         var mainPTemp = document.createElement('p');
         mainPTemp.className = 'card-text';
         var mainPWind = document.createElement('p');
         mainPWind.className = 'card-text';
         var mainPHumidity = document.createElement('p');
         mainPHumidity.className = 'card-text';
+
+        
 
         mainH5el.textContent = city.name;
         mainPTemp.textContent = "Temp: " + weather[0].main.temp + " °F";
@@ -82,6 +91,8 @@ var displayWeather = function(city, weather) {
         mainDivEl.appendChild(mainCardEl);
         mainCardEl.appendChild(mainCardBodyEl);
         mainCardBodyEl.append(mainH5el, mainPTemp, mainPWind, mainPHumidity);
+        mainH5el.appendChild(iconSpanEl);
+        iconSpanEl.append(iconImgEl);
     }
 
 
