@@ -39,7 +39,7 @@ var getCoordinates = function(data) {
     
     
 var getWeatherData = function(lat, lon) {    
-    var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=" + lat + "&lon=" + lon + "&cnt=" + "5" + "&appid=" + apiKey;
+    var weatherUrl = "https:api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
 
     fetch(weatherUrl)
     .then(function (response) {
