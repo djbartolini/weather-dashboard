@@ -29,7 +29,7 @@ var redoSearch = function(event) {
 
 // Geocode API gets coordinates from city name
 var getLocationData = function(q) {
-    var geocodeUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + q + "&limit=" + "5" + "&appid=" + apiKey; 
+    var geocodeUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + q + "&limit=" + "5" + "&appid=" + apiKey; 
     
     fetch(geocodeUrl)
     .then(function (response) {
@@ -78,7 +78,7 @@ var displayWeather = function(city, weather) {
         mainDivEl.innerHTML = null;
 
         var iconCode = weather[0].weather[0].icon;
-        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        var iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png";
   
         var mainCardEl = document.createElement('div');
         mainCardEl.className = 'card';
@@ -118,7 +118,7 @@ var displayCards = function(weather) {
     for (var i = 0; i < dailyWeather.length; i = i + 8) {  
             
         var iconCode = dailyWeather[i].weather[0].icon;
-        var iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+        var iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png";
 
         var smallCardEl = document.createElement('div');
         smallCardEl.className = 'card col-2 m-2';
