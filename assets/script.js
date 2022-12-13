@@ -8,7 +8,7 @@ var smallCardParent = document.querySelector('.small-card-parent');
 var smallCardDiv = document.querySelector('.small-card-div');
 var buttonDiv = document.querySelector('.button-div');
 
-
+var searchList = JSON.parse(localStorage.getItem('city')) || [];
 
 
 // Handle new search
@@ -16,7 +16,7 @@ var handleSearch = function(event) {
     event.preventDefault();
     var q = userInput.value.trim();
     getLocationData(q);
-    createMemoryButton(q);
+    saveCity(q);
     renderButtons(q);
 }
 
@@ -36,7 +36,6 @@ var getLocationData = function(q) {
         if (response.ok) {
             response.json().then(function (data) {
                 getCoordinates(data);
-                console.log(data);
             });
         }
     })
@@ -60,8 +59,6 @@ var getWeatherData = function(lat, lon) {
     .then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                console.log(data.city);
-                console.log(data.list);
                 displayWeather(data.city, data.list);
                 displayCards(data.list);
             });
@@ -140,7 +137,6 @@ var displayCards = function(weather) {
         smallPTemp.textContent = "Temp: " + dailyWeather[i].main.temp + " °F";
         smallPWind.textContent = "Wind: " + dailyWeather[i].wind.speed + " mph";
         smallPHumidity.textContent = "Humidity: " + dailyWeather[i].main.humidity + "%";
-        console.log(dailyWeather[i].dt_txt);
 
         smallCardDiv.appendChild(smallCardEl);
         smallCardEl.appendChild(smallCardBody);
@@ -149,10 +145,7 @@ var displayCards = function(weather) {
     }
 }
 
-var priorSearches = [];
-var searchList = JSON.parse(localStorage.getItem('city')) || [];
-console.log(searchList);
-
+// Renders buttons based on data in local storage
 var renderButtons = function(city) {
     buttonDiv.innerHTML = null;
     if (searchList.includes(city)) {
@@ -169,28 +162,28 @@ var renderButtons = function(city) {
     }
 }
 
-// Create buttons via city names saved in local storage
-var createMemoryButton = function(city) { 
+// Save searches in local storage
+var saveCity = function(city) { 
     arr = city.split(" ")
+    // Capitalizes first letter of each word in the search
     for (i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
     }
     cityCapitalized = arr.join(" ");
 
     if (searchList.includes(cityCapitalized)) {
-        console.log(searchList);
         return;
     } else { 
-        // For loop to capitalize first letter of each searched city name
-
         searchList.push(cityCapitalized);
         localStorage.setItem('city', JSON.stringify(searchList));
     }
 }   
 
 
+// Buttons are rendered on page load
 renderButtons();
 
+// Clicking on a button executes a search with the button's city name
 document.addEventListener('click', function(event) {
     if (event.target.matches('.prev-search')) {
         redoSearch(event);
