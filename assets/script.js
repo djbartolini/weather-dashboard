@@ -8,18 +8,22 @@ var smallCardParent = document.querySelector('.small-card-parent');
 var smallCardDiv = document.querySelector('.small-card-div');
 var buttonDiv = document.querySelector('.button-div');
 
+
+
+
 // Handle new search
 var handleSearch = function(event) {
     event.preventDefault();
     var q = userInput.value.trim();
     getLocationData(q);
     createMemoryButton(q);
+    renderButtons(q);
 }
 
 // Handle search from button
 var redoSearch = function(event) {
     event.preventDefault();
-    var q = this.innerHTML;
+    var q = event.target.innerHTML;
     getLocationData(q);
 }
 
@@ -145,27 +149,52 @@ var displayCards = function(weather) {
     }
 }
 
+var priorSearches = [];
+var searchList = JSON.parse(localStorage.getItem('city')) || [];
+console.log(searchList);
+
+var renderButtons = function(city) {
+    buttonDiv.innerHTML = null;
+    if (searchList.includes(city)) {
+        return;
+    } else { 
+
+        for (var i = 0; i < searchList.length; i++) {
+            var buttonEl = document.createElement('button');
+            buttonEl.className = 'btn btn-primary prev-search'
+            buttonEl.setAttribute('type', 'button');
+            buttonEl.textContent = searchList[i];
+            buttonDiv.appendChild(buttonEl);
+        }
+    }
+}
 
 // Create buttons via city names saved in local storage
-var createMemoryButton = function(city) {  
-    localStorage.setItem('city', city);
-
-    var buttonEl = document.createElement('button');
-    buttonEl.className = 'btn btn-primary'
-    buttonEl.setAttribute('type', 'button');
-    
-    // For loop to capitalize first letter of each searched city name
+var createMemoryButton = function(city) { 
     arr = city.split(" ")
     for (i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
     }
     cityCapitalized = arr.join(" ");
 
-    buttonEl.textContent = cityCapitalized;
-    buttonDiv.appendChild(buttonEl);
+    if (searchList.includes(cityCapitalized)) {
+        console.log(searchList);
+        return;
+    } else { 
+        // For loop to capitalize first letter of each searched city name
 
-    buttonEl.addEventListener('click', redoSearch);
-}
+        searchList.push(cityCapitalized);
+        localStorage.setItem('city', JSON.stringify(searchList));
+    }
+}   
 
+
+renderButtons();
+
+document.addEventListener('click', function(event) {
+    if (event.target.matches('.prev-search')) {
+        redoSearch(event);
+    }
+})
 
 searchBrn.addEventListener('click', handleSearch);
