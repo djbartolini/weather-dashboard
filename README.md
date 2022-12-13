@@ -14,7 +14,7 @@ The Weather Dashboard is a web app built using Bootstrap as well as the OpenWeat
 
 ## Visuals
 
-![Screenshot of the weather dashboard](./assets/weather-dashboard-screenshot.png)
+![Screenshot of the weather dashboard](./assets/weather-dash-screenshot.png)
 
 ## Support
 
