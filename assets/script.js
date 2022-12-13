@@ -53,7 +53,7 @@ var getCoordinates = function(data) {
   
 // OpenWeather API gets weather data
 var getWeatherData = function(lat, lon) {    
-    var weatherUrl = "https:api.openweathermap.org/data/2.5/forecast?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+    var weatherUrl = "https://api.openweathermap.org/data/2.5/forecast?units=imperial&lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
 
     fetch(weatherUrl)
     .then(function (response) {
